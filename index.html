@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="META PROFIT KING —— 由大連理工大學黃振銚與陳文聰組成的二人量化交易團隊，以系統化方向策略征戰 2026 香港量化交易大賽（HK$100 Million 管理資金）。">
+    <title>META PROFIT KING ｜ 2026 香港量化交易大賽參賽隊伍</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           Reset & Variables
+        ========================================================= */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-deep: #07070b;
+            --bg-mid: #0e0e15;
+            --bg-card: #15151d;
+            --bg-card-hi: #1c1c27;
+            --line: rgba(255, 255, 255, 0.08);
+            --line-hi: rgba(255, 255, 255, 0.14);
+
+            --red: #e23a3a;            /* Chinese red = up */
+            --red-deep: #b21f1f;
+            --red-glow: rgba(226, 58, 58, .35);
+            --gold: #d4a849;
+            --gold-light: #f4d58d;
+            --cyan: #00d4ff;
+            --green: #00b96b;
+
+            --text: #ebebef;
+            --text-mid: #a5a5b0;
+            --text-dim: #6c6c75;
+
+            --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            --display: 'Orbitron', 'Noto Sans TC', sans-serif;
+            --sans: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: var(--sans);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+        ::selection { background: var(--red); color: #fff; }
+
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+        /* Background grid + scanline */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 56px 56px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background: radial-gradient(ellipse at 50% -10%, rgba(226,58,58,.22), transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+        section { position: relative; z-index: 1; padding: 110px 0; }
+        section.tight { padding: 80px 0; }
+        .sec-tag {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: 12px;
+            color: var(--gold);
+            letter-spacing: .25em; text-transform: uppercase;
+            margin-bottom: 22px;
+        }
+        .sec-tag::before {
+            content: ''; width: 28px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold));
+        }
+        .sec-title {
+            font-family: var(--display); font-weight: 900;
+            font-size: clamp(34px, 5vw, 56px);
+            line-height: 1.1; letter-spacing: -.01em;
+            margin-bottom: 18px;
+        }
+        .sec-title .accent { color: var(--red); }
+        .sec-sub {
+            color: var(--text-mid);
+            font-size: 17px; max-width: 660px;
+        }
+
+        /* =========================================================
+           Nav
+        ========================================================= */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(7, 7, 11, .72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--line);
+            transition: background .3s;
+        }
+        .nav-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1200px; margin: 0 auto;
+            padding: 16px 28px;
+        }
+        .brand {
+            font-family: var(--display); font-weight: 900;
+            font-size: 20px; letter-spacing: .05em;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .brand-mark {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 34px; height: 34px;
+            border: 1px solid var(--red);
+            color: var(--red);
+            font-family: var(--display); font-weight: 900;
+            box-shadow: 0 0 12px var(--red-glow);
+        }
+        .brand-name small { display: block; font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: .25em; margin-top: 2px; }
+        .nav-menu { display: flex; gap: 36px; }
+        .nav-menu a {
+            font-size: 14px; color: var(--text-mid);
+            font-weight: 500; letter-spacing: .04em;
+            transition: color .2s;
+            position: relative;
+        }
+        .nav-menu a:hover { color: var(--text); }
+        .nav-menu a::after {
+            content: '';
+            position: absolute; left: 0; right: 0; bottom: -6px; height: 1px;
+            background: var(--red);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform .25s;
+        }
+        .nav-menu a:hover::after { transform: scaleX(1); }
+        .nav-cta {
+            padding: 9px 18px;
+            font-family: var(--mono); font-size: 12px;
+            letter-spacing: .15em;
+            border: 1px solid var(--red);
+            color: var(--red);
+            transition: all .2s;
+        }
+        .nav-cta:hover {
+            background: var(--red);
+            color: #fff;
+            box-shadow: 0 0 24px var(--red-glow);
+        }
+        @media (max-width: 860px) { .nav-menu { display: none; } }
+
+        /* =========================================================
+           Hero
+        ========================================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center;
+            padding: 160px 0 100px;
+            overflow: hidden;
+            position: relative;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            z-index: 0;
+        }
+        .hero-kline {
+            position: absolute; right: -8%; top: 8%; width: 60%; opacity: .35;
+        }
+        @media (max-width: 1024px) { .hero-kline { display: none; } }
+        .hero-inner { position: relative; z-index: 2; }
+        .hero-eyebrow {
+            display: inline-flex; align-items: center; gap: 14px;
+            font-family: var(--mono); font-size: 12px;
+            color: var(--gold);
+            letter-spacing: .3em; text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+        .hero-eyebrow .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 10px var(--red);
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .35; transform: scale(1.3); }
+        }
+        .hero-title {
+            font-family: var(--display);
+            font-weight: 900;
+            font-size: clamp(58px, 11vw, 168px);
+            line-height: .96; letter-spacing: -.04em;
+            margin-bottom: 28px;
+            position: relative;
+        }
+        .hero-title .h-meta {
+            display: block;
+            background: linear-gradient(180deg, #fff 0%, #e23a3a 70%, #8b0a0a 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px var(--red-glow);
+            font-size: clamp(50px, 10vw, 150px);
+            letter-spacing: -.02em;
+        }
+        .hero-title .h-profit {
+            display: block;
+            font-size: clamp(34px, 6.5vw, 92px);
+            font-weight: 700;
+            letter-spacing: .16em;
+            color: var(--text);
+            margin-top: 4px;
+        }
+        .hero-title .king {
+            display: block;
+            font-size: clamp(42px, 8vw, 116px);
+            font-weight: 900;
+            letter-spacing: .1em;
+            background: linear-gradient(180deg, #f7e3ad 0%, #d4a849 55%, #8a6a1f 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 2px;
+            text-shadow: 0 0 50px rgba(212, 168, 73, .25);
+        }
+        .hero-title .king .crown {
+            -webkit-text-fill-color: var(--gold);
+            color: var(--gold);
+            font-size: .62em;
+            vertical-align: .12em;
+            margin-right: .06em;
+        }
+        .hero-title .h-tagline {
+            display: block;
+            font-family: var(--sans); font-weight: 700;
+            font-size: clamp(14px, 1.8vw, 20px);
+            color: var(--gold);
+            letter-spacing: .4em;
+            margin-top: 22px;
+        }
+        .hero-sub {
+            max-width: 640px;
+            font-size: 19px; color: var(--text-mid);
+            line-height: 1.7;
+            margin-bottom: 44px;
+        }
+        .hero-sub strong { color: var(--text); font-weight: 600; }
+        .hero-ctas {
+            display: flex; gap: 16px; flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 16px 28px;
+            font-family: var(--mono); font-size: 13px;
+            letter-spacing: .18em; text-transform: uppercase;
+            border: 1px solid transparent;
+            transition: all .25s;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: var(--red);
+            color: #fff;
+            box-shadow: 0 8px 30px var(--red-glow);
+        }
+        .btn-primary:hover {
+            background: #fff; color: var(--red);
+            box-shadow: 0 8px 40px rgba(255,255,255,.2);
+        }
+        .btn-ghost {
+            border-color: var(--line-hi);
+            color: var(--text);
+        }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+        .btn .arrow { transition: transform .25s; }
+        .btn:hover .arrow { transform: translateX(4px); }
+
+        /* Hero stats */
+        .hero-stats {
+            margin-top: 90px;
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        @media (max-width: 720px) { .hero-stats { grid-template-columns: repeat(2, 1fr); } }
+        .stat {
+            padding: 28px 22px;
+            border-right: 1px solid var(--line);
+            position: relative;
+        }
+        .stat:last-child { border-right: none; }
+        .stat-n {
+            font-family: var(--display); font-weight: 900;
+            font-size: 32px; color: var(--text);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .stat-n .unit { font-size: 16px; color: var(--gold); margin-left: 4px; }
+        .stat-l {
+            font-family: var(--mono); font-size: 11px;
+            color: var(--text-dim); letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+        .stat.up .stat-n { color: var(--red); }
+        .stat.down .stat-n { color: var(--green); }
+
+        /* Ticker */
+        .ticker {
+            position: relative; z-index: 1;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background: var(--bg-mid);
+            overflow: hidden;
+            padding: 14px 0;
+        }
+        .ticker-track {
+            display: flex; gap: 56px;
+            animation: ticker 35s linear infinite;
+            white-space: nowrap;
+            font-family: var(--mono); font-size: 13px;
+            color: var(--text-mid);
+            padding-left: 56px;
+        }
+        .ticker-track span.up { color: var(--red); }
+        .ticker-track span.down { color: var(--green); }
+        .ticker-track span.gold { color: var(--gold); }
+        @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* =========================================================
+           About Comp
+        ========================================================= */
+        .comp-grid {
+            margin-top: 50px;
+            display: grid; grid-template-columns: 1.3fr 1fr;
+            gap: 36px;
+        }
+        @media (max-width: 900px) { .comp-grid { grid-template-columns: 1fr; } }
+        .comp-card {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        .comp-card::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 3px; background: var(--red);
+        }
+        .comp-card.highlight {
+            background:
+                radial-gradient(120% 80% at 0% 0%, rgba(226,58,58,.12), transparent 50%),
+                var(--bg-card);
+            border-color: rgba(226, 58, 58, .3);
+        }
+        .comp-card h3 {
+            font-family: var(--display); font-weight: 700;
+            font-size: 22px; margin-bottom: 12px;
+        }
+        .comp-card p { color: var(--text-mid); font-size: 15px; }
+        .comp-card .meta {
+            margin-top: 22px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px;
+            font-family: var(--mono); font-size: 12px;
+        }
+        .comp-card .meta b { display: block; color: var(--text-dim); letter-spacing: .18em; font-weight: 400; margin-bottom: 4px; }
+        .comp-card .meta span { color: var(--gold); }
+
+        .timeline { margin-top: 60px; }
+        .timeline-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            border: 1px solid var(--line);
+        }
+        @media (max-width: 900px) { .timeline-grid { grid-template-columns: repeat(2, 1fr); } }
+        .tl-item {
+            padding: 28px 24px;
+            border-right: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            transition: background .25s;
+            position: relative;
+        }
+        .tl-item:hover { background: var(--bg-card); }
+        .tl-item .d {
+            font-family: var(--mono); font-size: 11px;
+            color: var(--text-dim); letter-spacing: .15em;
+            margin-bottom: 12px;
+        }
+        .tl-item .d b { color: var(--red); font-weight: 700; }
+        .tl-item h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .tl-item p { font-size: 13px; color: var(--text-mid); }
+
+        /* =========================================================
+           Members
+        ========================================================= */
+        .members-grid {
+            margin-top: 50px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+        @media (max-width: 900px) { .members-grid { grid-template-columns: 1fr; } }
+
+        .m-card {
+            background: linear-gradient(180deg, var(--bg-card-hi), var(--bg-card));
+            border: 1px solid var(--line);
+            padding: 40px 36px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s, transform .3s;
+        }
+        .m-card::before {
+            content: '';
+            position: absolute; right: -100px; top: -100px;
+            width: 240px; height: 240px;
+            background: radial-gradient(circle, var(--red-glow), transparent 60%);
+            opacity: 0; transition: opacity .4s;
+        }
+        .m-card:hover { border-color: rgba(226, 58, 58, .35); transform: translateY(-4px); }
+        .m-card:hover::before { opacity: 1; }
+        .m-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 26px; position: relative; }
+        .m-avatar {
+            width: 76px; height: 76px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--bg-mid);
+            border: 1px solid var(--line);
+            font-family: var(--display); font-weight: 900;
+            font-size: 28px; color: var(--red);
+            position: relative;
+        }
+        .m-avatar::after {
+            content: ''; position: absolute; inset: -6px;
+            border: 1px dashed var(--line-hi);
+        }
+        .m-role {
+            font-family: var(--mono); font-size: 11px;
+            color: var(--gold); letter-spacing: .2em;
+            padding: 6px 12px;
+            border: 1px solid rgba(212, 168, 73, .3);
+        }
+        .m-name {
+            font-family: var(--display); font-weight: 700;
+            font-size: 36px; line-height: 1; margin-bottom: 4px;
+            position: relative;
+        }
+        .m-name-cn {
+            font-size: 16px; color: var(--gold); letter-spacing: .25em;
+            margin-bottom: 22px; position: relative;
+        }
+        .m-meta {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px;
+            position: relative;
+        }
+        .m-tag {
+            font-family: var(--mono); font-size: 11px;
+            padding: 5px 11px;
+            background: var(--bg-mid);
+            border: 1px solid var(--line);
+            color: var(--text-mid); letter-spacing: .1em;
+        }
+        .m-tag.red { color: var(--red); border-color: rgba(226,58,58,.3); }
+        .m-tag.gold { color: var(--gold); border-color: rgba(212,168,73,.3); }
+        .m-bio {
+            color: var(--text-mid); font-size: 14.5px;
+            line-height: 1.7; margin-bottom: 26px;
+            position: relative;
+        }
+        .m-skills-title {
+            font-family: var(--mono); font-size: 11px;
+            color: var(--text-dim); letter-spacing: .2em;
+            text-transform: uppercase; margin-bottom: 14px;
+            position: relative;
+        }
+        .m-skills {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 10px 14px; position: relative;
+        }
+        .m-skill {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; color: var(--text);
+        }
+        .m-skill::before {
+            content: ''; width: 5px; height: 5px; background: var(--red);
+            transform: rotate(45deg);
+        }
+
+        .m-card.captain { border-top: 2px solid var(--red); }
+
+        /* =========================================================
+           Tech Stack
+        ========================================================= */
+        .stack-grid {
+            margin-top: 50px;
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 900px) { .stack-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 560px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+        .stack-cell {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            padding: 22px 18px;
+            text-align: center;
+            transition: all .25s;
+        }
+        .stack-cell:hover {
+            border-color: var(--red);
+            background: var(--bg-card-hi);
+            transform: translateY(-3px);
+        }
+        .stack-cell .ico { font-size: 26px; margin-bottom: 10px; display: block; }
+        .stack-cell .nm {
+            font-family: var(--mono); font-size: 12px;
+            color: var(--text); letter-spacing: .1em;
+        }
+        .stack-cell .lv {
+            font-size: 11px; color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* =========================================================
+           Strategy
+        ========================================================= */
+        .strat-wrap {
+            margin-top: 50px;
+            display: grid; grid-template-columns: 1fr 1.1fr;
+            gap: 36px;
+            align-items: start;
+        }
+        @media (max-width: 980px) { .strat-wrap { grid-template-columns: 1fr; } }
+        .strat-list { display: flex; flex-direction: column; gap: 14px; }
+        .strat-item {
+            border: 1px solid var(--line);
+            background: var(--bg-card);
+            padding: 22px 24px;
+            display: grid; grid-template-columns: 60px 1fr auto;
+            gap: 22px; align-items: center;
+            transition: all .25s;
+            cursor: default;
+        }
+        .strat-item:hover { border-color: var(--gold); }
+        .strat-item.active { border-color: var(--red); background: var(--bg-card-hi); }
+        .strat-num {
+            font-family: var(--display); font-weight: 900;
+            font-size: 36px; color: var(--text-dim);
+            line-height: 1;
+        }
+        .strat-item.active .strat-num { color: var(--red); }
+        .strat-info h4 {
+            font-size: 17px; font-weight: 700; margin-bottom: 6px;
+        }
+        .strat-info p { font-size: 13.5px; color: var(--text-mid); }
+        .strat-stat {
+            font-family: var(--mono); font-size: 11px;
+            color: var(--gold); letter-spacing: .15em;
+            text-align: right;
+        }
+        .strat-stat b { display: block; color: var(--text); font-size: 18px; margin-bottom: 4px; }
+
+        /* Equity Curve Card */
+        .curve-card {
+            background: linear-gradient(180deg, var(--bg-card-hi), var(--bg-card));
+            border: 1px solid var(--line);
+            padding: 32px;
+            position: relative;
+        }
+        .curve-head {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .curve-head h4 { font-family: var(--display); font-size: 18px; font-weight: 700; }
+        .curve-head .tag-live {
+            display: flex; align-items: center; gap: 8px;
+            font-family: var(--mono); font-size: 11px;
+            color: var(--green); letter-spacing: .15em;
+        }
+        .curve-head .tag-live::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--green); box-shadow: 0 0 8px var(--green);
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+        .curve-stats {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            margin-bottom: 24px;
+        }
+        .curve-s { padding: 0 14px; border-right: 1px solid var(--line); }
+        .curve-s:last-child { border-right: none; }
+        .curve-s .l { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: .15em; }
+        .curve-s .v { font-family: var(--display); font-weight: 700; font-size: 20px; margin-top: 4px; }
+        .curve-s .v.up { color: var(--red); }
+        .curve-s .v.down { color: var(--green); }
+
+        /* =========================================================
+           Why
+        ========================================================= */
+        .pillars {
+            margin-top: 50px;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+        @media (max-width: 900px) { .pillars { grid-template-columns: 1fr; } }
+        .pillar {
+            padding: 36px 30px;
+            border: 1px solid var(--line);
+            background: var(--bg-card);
+            position: relative;
+        }
+        .pillar .icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 52px; height: 52px;
+            border: 1px solid var(--red);
+            color: var(--red);
+            font-family: var(--display); font-weight: 900;
+            font-size: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 16px var(--red-glow);
+        }
+        .pillar h4 { font-family: var(--display); font-weight: 700; font-size: 20px; margin-bottom: 12px; }
+        .pillar p { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+        .pillar .num {
+            position: absolute; right: 24px; top: 24px;
+            font-family: var(--mono); font-size: 11px;
+            color: var(--text-dim); letter-spacing: .18em;
+        }
+
+        /* =========================================================
+           CTA
+        ========================================================= */
+        .cta-section {
+            text-align: center;
+            padding: 130px 0;
+        }
+        .cta-card {
+            padding: 72px 36px;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(226,58,58,.18), transparent 60%),
+                var(--bg-card);
+            border: 1px solid rgba(226, 58, 58, .25);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0 38px,
+                rgba(255,255,255,.02) 38px 39px
+            );
+            pointer-events: none;
+        }
+        .cta-card .sec-title { font-size: clamp(40px, 6vw, 72px); margin-bottom: 22px; }
+        .cta-card p { color: var(--text-mid); font-size: 17px; margin-bottom: 36px; }
+        .cta-card .btns { display: inline-flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+        .cta-email {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: var(--mono); font-size: 14px;
+            color: var(--text); padding: 12px 20px;
+            border: 1px dashed var(--line-hi);
+            margin-bottom: 30px;
+        }
+
+        /* =========================================================
+           Footer
+        ========================================================= */
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 50px 0 36px;
+            background: var(--bg-mid);
+            position: relative; z-index: 1;
+        }
+        .foot-top {
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 36px;
+            padding-bottom: 36px;
+            border-bottom: 1px solid var(--line);
+        }
+        @media (max-width: 720px) { .foot-top { grid-template-columns: 1fr 1fr; } }
+        .foot-brand { font-family: var(--display); font-weight: 900; font-size: 22px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+        .foot-brand .brand-mark { width: 28px; height: 28px; font-size: 16px; }
+        .foot-tag { color: var(--text-mid); font-size: 13px; max-width: 280px; }
+        .foot-col h5 {
+            font-family: var(--mono); font-size: 11px;
+            color: var(--gold); letter-spacing: .2em;
+            text-transform: uppercase; margin-bottom: 18px;
+        }
+        .foot-col a, .foot-col li {
+            display: block; color: var(--text-mid); font-size: 13px;
+            padding: 6px 0; transition: color .2s;
+        }
+        .foot-col a:hover { color: var(--red); }
+        .foot-col ul { list-style: none; }
+        .foot-bottom {
+            padding-top: 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 14px;
+            font-family: var(--mono); font-size: 11px;
+            color: var(--text-dim); letter-spacing: .12em;
+        }
+
+        /* =========================================================
+           Animation helpers
+        ========================================================= */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s, transform .7s; }
+        .reveal.show { opacity: 1; transform: translateY(0); }
+
+        /* CRT-ish glow */
+        .glow-text {
+            text-shadow: 0 0 8px currentColor;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#top" class="brand">
+            <span class="brand-mark">M</span>
+            <span class="brand-name">MPK<small>META PROFIT KING</small></span>
+        </a>
+        <div class="nav-menu">
+            <a href="#comp">賽事</a>
+            <a href="#members">團隊</a>
+            <a href="#stack">武器庫</a>
+            <a href="#strategy">策略</a>
+            <a href="#why">信念</a>
+            <a href="#contact">聯絡</a>
+        </div>
+        <a href="#contact" class="nav-cta">JOIN US</a>
+    </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+    <div class="hero-bg">
+        <svg class="hero-kline" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="lg1" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#e23a3a" stop-opacity="0"/>
+                    <stop offset="100%" stop-color="#e23a3a" stop-opacity=".55"/>
+                </linearGradient>
+            </defs>
+            <!-- grid -->
+            <g stroke="rgba(255,255,255,.04)">
+                <line x1="0" y1="100" x2="800" y2="100"/>
+                <line x1="0" y1="200" x2="800" y2="200"/>
+                <line x1="0" y1="300" x2="800" y2="300"/>
+                <line x1="0" y1="400" x2="800" y2="400"/>
+                <line x1="0" y1="500" x2="800" y2="500"/>
+            </g>
+            <!-- candles -->
+            <g>
+                <!-- up candles (red in Chinese market) -->
+                <line x1="60" y1="490" x2="60" y2="430" stroke="#e23a3a"/>
+                <rect x="50" y="440" width="20" height="40" fill="#e23a3a"/>
+                <line x1="110" y1="475" x2="110" y2="410" stroke="#e23a3a"/>
+                <rect x="100" y="420" width="20" height="50" fill="#e23a3a"/>
+                <line x1="160" y1="465" x2="160" y2="380" stroke="#e23a3a"/>
+                <rect x="150" y="395" width="20" height="55" fill="#e23a3a"/>
+                <line x1="210" y1="455" x2="210" y2="395" stroke="#00b96b"/>
+                <rect x="200" y="405" width="20" height="35" fill="#00b96b"/>
+                <line x1="260" y1="430" x2="260" y2="360" stroke="#e23a3a"/>
+                <rect x="250" y="370" width="20" height="50" fill="#e23a3a"/>
+                <line x1="310" y1="445" x2="310" y2="340" stroke="#e23a3a"/>
+                <rect x="300" y="350" width="20" height="80" fill="#e23a3a"/>
+                <line x1="360" y1="420" x2="360" y2="320" stroke="#e23a3a"/>
+                <rect x="350" y="335" width="20" height="70" fill="#e23a3a"/>
+                <line x1="410" y1="395" x2="410" y2="285" stroke="#e23a3a"/>
+                <rect x="400" y="305" width="20" height="75" fill="#e23a3a"/>
+                <line x1="460" y1="375" x2="460" y2="250" stroke="#e23a3a"/>
+                <rect x="450" y="270" width="20" height="90" fill="#e23a3a"/>
+                <line x1="510" y1="345" x2="510" y2="225" stroke="#e23a3a"/>
+                <rect x="500" y="245" width="20" height="80" fill="#e23a3a"/>
+                <line x1="560" y1="320" x2="560" y2="200" stroke="#00b96b"/>
+                <rect x="550" y="215" width="20" height="90" fill="#00b96b"/>
+                <line x1="610" y1="295" x2="610" y2="180" stroke="#e23a3a"/>
+                <rect x="600" y="200" width="20" height="80" fill="#e23a3a"/>
+                <line x1="660" y1="270" x2="660" y2="160" stroke="#e23a3a"/>
+                <rect x="650" y="180" width="20" height="75" fill="#e23a3a"/>
+                <line x1="710" y1="235" x2="710" y2="125" stroke="#e23a3a"/>
+                <rect x="700" y="145" width="20" height="75" fill="#e23a3a"/>
+                <line x1="760" y1="205" x2="760" y2="90" stroke="#e23a3a"/>
+                <rect x="750" y="110" width="20" height="80" fill="#e23a3a"/>
+            </g>
+            <!-- moving avg line -->
+            <polyline
+                fill="none" stroke="#d4a849" stroke-width="1.5" stroke-dasharray="4 4"
+                points="60,460 110,450 160,425 210,420 260,400 310,395 360,375 410,340 460,310 510,280 560,255 610,235 660,215 710,180 760,150"
+                opacity=".6"/>
+            <!-- trend area -->
+            <polyline
+                fill="url(#lg1)" opacity=".5"
+                points="60,460 110,450 160,425 210,420 260,400 310,395 360,375 410,340 460,310 510,280 560,255 610,235 660,215 710,180 760,150 760,600 60,600"/>
+        </svg>
+    </div>
+
+    <div class="container hero-inner">
+        <div class="hero-eyebrow">
+            <span class="dot"></span>
+            <span>FUND CONNECT HK · 2026 HONG KONG QUANT TRADING COMPETITION</span>
+        </div>
+
+        <h1 class="hero-title">
+            <span class="h-meta">META</span>
+            <span class="h-profit">PROFIT</span>
+            <span class="king"><span class="crown">♛</span>KING</span>
+            <span class="h-tagline">系 統 化 方 向 策 略</span>
+        </h1>
+
+        <p class="hero-sub">
+            由 <strong>大連理工大學</strong> 兩位本科生發起的<strong>二人量化交易小隊</strong>，
+            專注<strong>系統化方向策略（Systematic Directional）</strong>——不做市場中性，只做有方向的判斷。
+            黃振銚掌管<strong>信號、系統與架構</strong>，陳文聰負責<strong>策略、算法與回測</strong>；
+            從渤海之濱駛向維多利亞港，用規則與紀律去賺趨勢的錢。
+        </p>
+
+        <div class="hero-ctas">
+            <a href="#members" class="btn btn-primary">
+                VIEW THE TEAM
+                <span class="arrow">→</span>
+            </a>
+            <a href="#comp" class="btn btn-ghost">
+                ABOUT THE COMP
+            </a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat up">
+                <div class="stat-n">HK$100<span class="unit">M</span></div>
+                <div class="stat-l">Managed Capital</div>
+            </div>
+            <div class="stat">
+                <div class="stat-n">2<span class="unit">人</span></div>
+                <div class="stat-l">Team Size</div>
+            </div>
+            <div class="stat">
+                <div class="stat-n">104<span class="unit">天</span></div>
+                <div class="stat-l">Duration (09.28–12.29)</div>
+            </div>
+            <div class="stat down">
+                <div class="stat-n">∞</div>
+                <div class="stat-l">Conviction</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Ticker -->
+<div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="ticker-track">
+        <span class="gold">♛ META PROFIT KING</span>
+        <span>報名狀態:</span><span class="up">SUBMITTED ●</span>
+        <span class="gold">策略主軸:</span><span class="up">SYSTEMATIC DIRECTIONAL ▲</span>
+        <span>方向暴露:</span><span class="up">NET LONG 62%</span>
+        <span class="gold">♛ META PROFIT KING</span>
+        <span>HSI</span><span class="up">+0.86%</span>
+        <span>BTC / USD</span><span class="down">-1.18%</span>
+        <span>HKD / USD</span><span class="up">+0.42%</span>
+        <span class="gold">// trend.is.your.friend()</span>
+        <span class="gold">♛ META PROFIT KING</span>
+        <span>持倉週期:</span><span>數天 — 數週</span>
+        <span>風控鐵律:</span><span class="up">MAX DD −12% 硬止損</span>
+    </div>
+</div>
+
+<!-- ================= COMPETITION ================= -->
+<section id="comp" class="tight">
+    <div class="container">
+        <div class="sec-tag reveal">SECTION 01 · COMPETITION</div>
+        <h2 class="sec-title reveal">關於<span class="accent">這場賽事</span></h2>
+        <p class="sec-sub reveal">「發現策略 · 展現能力 · 連結未來」—— 香港資管通 Fund Connect HK 與香港大學 Web3 研究院聯手主辦，HK$100M 真金白銀等你來管。</p>
+
+        <div class="comp-grid">
+            <div class="comp-card highlight reveal">
+                <h3>2026 香港量化交易大賽</h3>
+                <p>一個面向全球量化研究者的實盤交易擂臺，覆蓋港股、加密貨幣與衍生品多市場。比賽要求參賽者用真實資金提交策略，決賽資金池高達一億港幣，由盈透證券（IBKR）等頂級券商提供交易環境。雙軌賽制分別考驗 <strong>模擬盤的策略質量</strong> 與 <strong>實盤的風控紀律</strong>。</p>
+                <div class="meta">
+                    <div><b>主辦機構</b><span>Fund Connect HK · HKU Web3</span></div>
+                    <div><b>交易環境</b><span>IBKR · 盈透證券</span></div>
+                    <div><b>數據合作</b><span>AiVIX · Glassnode · AlgoSeek</span></div>
+                    <div><b>合作券商</b><span>天龍證券</span></div>
+                </div>
+            </div>
+
+            <div class="comp-card reveal">
+                <h3>我們的目標</h3>
+                <p>建立一個能穿越牛熊、紀律嚴明的量化策略組合。短期看 <strong>夏普比率、最大回撤</strong>，長期看 <strong>風險調整後收益</strong>。用一個學期的時間，把課堂上的隨機過程、優化理論與時間序列，變成一個真正能上線、能在維港交易時段裡賺錢的系統。</p>
+                <div class="meta">
+                    <div><b>比賽窗口</b><span style="color:var(--red)">2026.09.28 → 12.29</span></div>
+                    <div><b>賽制</b><span>模擬盤 + 真盤並行</span></div>
+                    <div><b>獎池</b><span>HK$100,000,000</span></div>
+                    <div><b>願景</b><span style="color:var(--red)">連結學界 ↔ 業界</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline reveal">
+            <div class="timeline-grid">
+                <div class="tl-item">
+                    <div class="d"><b>09.28</b> · DAY 0</div>
+                    <h4>報到 & 策略述演</h4>
+                    <p>提交初始策略說明、團隊介紹與風控框架。</p>
+                </div>
+                <div class="tl-item">
+                    <div class="d"><b>10.X</b> · WEEK 3</div>
+                    <h4>回測 + 模擬盤</h4>
+                    <p>在歷史數據上迭代因子，於模擬環境驗證 alpha。</p>
+                </div>
+                <div class="tl-item">
+                    <div class="d"><b>11.X</b> · WEEK 8</div>
+                    <h4>小組評審 · 中期答辯</h4>
+                    <p>面對評委委員與業界導師，答辯策略與風險。</p>
+                </div>
+                <div class="tl-item">
+                    <div class="d"><b>12.29</b> · DAY 104</div>
+                    <h4>實盤最終評審</h4>
+                    <p>真盤收益、夏普、信息比率、加權排名，決出優勝。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= TEAM MEMBERS ================= -->
+<section id="members">
+    <div class="container">
+        <div class="sec-tag reveal">SECTION 02 · THE DUO</div>
+        <h2 class="sec-title reveal">兩位<span class="accent">隊員</span></h2>
+        <p class="sec-sub reveal">一位來自電子信息工程，一位來自計算機科學。工程 × 算法 × 交易，一個都不能少。</p>
+
+        <div class="members-grid">
+
+            <!-- Captain -->
+            <article class="m-card captain reveal">
+                <div class="m-head">
+                    <div class="m-avatar">黃</div>
+                    <span class="m-role">CAPTAIN · 隊長</span>
+                </div>
+                <div class="m-name">Zhen-Tiao Huang</div>
+                <div class="m-name-cn">黃 振 銚</div>
+                <div class="m-meta">
+                    <span class="m-tag red">電子信息工程</span>
+                    <span class="m-tag">大連理工大學</span>
+                    <span class="m-tag gold">SYSTEMS · SIGNALS</span>
+                </div>
+                <p class="m-bio">
+                    信號出身的系統架構師。擅長從訊號與噪聲之間抽出有效信號，把課堂上的
+                    DSP / 隨機過程 / 嵌入式知識轉化成<strong>低延遲、高可用的交易基礎設施</strong>。
+                    在團隊裡負責：行情接入、訂單路由、風控監控、底層架構設計。
+                </p>
+                <div class="m-skills-title">// CORE STACK</div>
+                <div class="m-skills">
+                    <div class="m-skill">C / C++ / Rust</div>
+                    <div class="m-skill">FPGA · Embedded</div>
+                    <div class="m-skill">訊號處理 · DSP</div>
+                    <div class="m-skill">Linux · 系統調優</div>
+                    <div class="m-skill">低延遲網路</div>
+                    <div class="m-skill">風控 / 監控面板</div>
+                </div>
+            </article>
+
+            <!-- Member -->
+            <article class="m-card reveal">
+                <div class="m-head">
+                    <div class="m-avatar">陳</div>
+                    <span class="m-role">MEMBER · 隊員</span>
+                </div>
+                <div class="m-name">Wen-Cong Chen</div>
+                <div class="m-name-cn">陳 文 聰</div>
+                <div class="m-meta">
+                    <span class="m-tag red">計算機科學與技術</span>
+                    <span class="m-tag">大連理工大學</span>
+                    <span class="m-tag gold">STRATEGY · ML</span>
+                </div>
+                <p class="m-bio">
+                    CS 出身的策略工程師。擅長把課本上的演算法真正寫成能跑的代碼——
+                    <strong>從因子挖掘到回測、再到上線實盤，一條龍完成</strong>。
+                    在團隊裡負責：策略研發、因子庫、回測框架、機器學習模型。
+                </p>
+                <div class="m-skills-title">// CORE STACK</div>
+                <div class="m-skills">
+                    <div class="m-skill">Python · NumPy · Pandas</div>
+                    <div class="m-skill">方向策略 / 動量因子</div>
+                    <div class="m-skill">ML · PyTorch / Sklearn</div>
+                    <div class="m-skill">回測框架設計</div>
+                    <div class="m-skill">Web3 · 鏈上數據</div>
+                    <div class="m-skill">研究 → 工程化</div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= STACK ================= -->
+<section id="stack" class="tight">
+    <div class="container">
+        <div class="sec-tag reveal">SECTION 03 · ARSENAL</div>
+        <h2 class="sec-title reveal">武器<span class="accent">庫</span></h2>
+        <p class="sec-sub reveal">兩位隊員將共同使用以下技術棧，建構一個從研究到實盤的全鏈路系統。</p>
+
+        <div class="stack-grid">
+            <div class="stack-cell reveal"><span class="ico">🐍</span><div class="nm">Python</div><div class="lv">研究主力</div></div>
+            <div class="stack-cell reveal"><span class="ico">⚡</span><div class="nm">C++</div><div class="lv">低延遲</div></div>
+            <div class="stack-cell reveal"><span class="ico">🦀</span><div class="nm">Rust</div><div class="lv">系統服務</div></div>
+            <div class="stack-cell reveal"><span class="ico">📊</span><div class="nm">Pandas</div><div class="lv">時序分析</div></div>
+            <div class="stack-cell reveal"><span class="ico">🔥</span><div class="nm">PyTorch</div><div class="lv">深度學習</div></div>
+            <div class="stack-cell reveal"><span class="ico">📈</span><div class="nm">Backtrader</div><div class="lv">回測</div></div>
+            <div class="stack-cell reveal"><span class="ico">🧮</span><div class="nm">QuantStats</div><div class="lv">績效分析</div></div>
+            <div class="stack-cell reveal"><span class="ico">🔗</span><div class="nm">IBKR API</div><div class="lv">實盤通道</div></div>
+            <div class="stack-cell reveal"><span class="ico">⛓️</span><div class="nm">Web3.py</div><div class="lv">鏈上數據</div></div>
+            <div class="stack-cell reveal"><span class="ico">🐧</span><div class="nm">Linux</div><div class="lv">部署環境</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= STRATEGY ================= -->
+<section id="strategy">
+    <div class="container">
+        <div class="sec-tag reveal">SECTION 04 · PLAYBOOK</div>
+        <h2 class="sec-title reveal">系統化<span class="accent">方向策略</span></h2>
+        <p class="sec-sub reveal">我們不做市場中性——我們賭方向，但用系統、用規則、用紀律去賭。四條主線構成我們的方向性組合，覆蓋數天至數週的持倉週期，並以硬止損與最大回撤上限作為護欄。</p>
+
+        <div class="strat-wrap">
+            <div class="strat-list">
+                <div class="strat-item active reveal">
+                    <div class="strat-num">01</div>
+                    <div class="strat-info">
+                        <h4>趨勢跟蹤 · 多市場 CTA</h4>
+                        <p>唐奇安通道 + 多週期均線系統，在港股、加密與商品上捕捉中長線趨勢。核心持倉，賺的是大波段。</p>
+                    </div>
+                    <div class="strat-stat"><b class="up">↑ 0.85</b>目標夏普</div>
+                </div>
+                <div class="strat-item reveal">
+                    <div class="strat-num">02</div>
+                    <div class="strat-info">
+                        <h4>截面動量 · 方向選股</h4>
+                        <p>在恆生 / 中概池內按 12−1 動量因子排序，做多頭部、做空尾部，賺趨勢延續的錢。</p>
+                    </div>
+                    <div class="strat-stat"><b>-12%</b>可接受回撤</div>
+                </div>
+                <div class="strat-item reveal">
+                    <div class="strat-num">03</div>
+                    <div class="strat-info">
+                        <h4>波動率突破 · 日內方向</h4>
+                        <p>ATR 通道突破配合波動率過濾，在港股交易時段內捕捉日內方向性行情，快進快出。</p>
+                    </div>
+                    <div class="strat-stat"><b>AiVIX</b>數據支持</div>
+                </div>
+                <div class="strat-item reveal">
+                    <div class="strat-num">04</div>
+                    <div class="strat-info">
+                        <h4>機器學習 · 方向概率</h4>
+                        <p>梯度提升樹融合宏觀與訂單簿特徵，輸出下一根 K 線的方向概率與置信度，嚴控過擬合。</p>
+                    </div>
+                    <div class="strat-stat"><b>待驗證</b>研究階段</div>
+                </div>
+            </div>
+
+            <aside class="curve-card reveal">
+                <div class="curve-head">
+                    <h4>EQUITY CURVE · 示意</h4>
+                    <span class="tag-live">BACKTEST PREVIEW</span>
+                </div>
+
+                <div class="curve-stats">
+                    <div class="curve-s">
+                        <div class="l">ANNUAL</div>
+                        <div class="v up">+28.4%</div>
+                    </div>
+                    <div class="curve-s">
+                        <div class="l">SHARPE</div>
+                        <div class="v">1.62</div>
+                    </div>
+                    <div class="curve-s">
+                        <div class="l">MAX DD</div>
+                        <div class="v down">-11.3%</div>
+                    </div>
+                    <div class="curve-s">
+                        <div class="l">WIN RATE</div>
+                        <div class="v">42%</div>
+                    </div>
+                </div>
+
+                <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" width="100%">
+                    <defs>
+                        <linearGradient id="curveG" x1="0" y1="1" x2="0" y2="0">
+                            <stop offset="0%" stop-color="#e23a3a" stop-opacity="0"/>
+                            <stop offset="100%" stop-color="#e23a3a" stop-opacity=".35"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- grid -->
+                    <g stroke="rgba(255,255,255,.05)" stroke-width="1">
+                        <line x1="0" y1="50" x2="500" y2="50"/>
+                        <line x1="0" y1="100" x2="500" y2="100"/>
+                        <line x1="0" y1="150" x2="500" y2="150"/>
+                    </g>
+                    <!-- baseline -->
+                    <line x1="0" y1="180" x2="500" y2="180" stroke="rgba(255,255,255,.1)" stroke-dasharray="3 4"/>
+                    <!-- area: trend-following shape (chop -> trend -> pullback -> trend) -->
+                    <polygon
+                        fill="url(#curveG)"
+                        points="0,178 30,176 55,184 80,180 105,168 130,152 155,145 180,152 205,134 230,120 255,112 280,122 305,108 330,88 355,72 380,80 405,60 430,52 455,64 480,44 500,32 500,180 0,180"/>
+                    <!-- line -->
+                    <polyline
+                        fill="none" stroke="#e23a3a" stroke-width="2"
+                        points="0,178 30,176 55,184 80,180 105,168 130,152 155,145 180,152 205,134 230,120 255,112 280,122 305,108 330,88 355,72 380,80 405,60 430,52 455,64 480,44 500,32"/>
+                    <!-- markers: trend entry points -->
+                    <g fill="#d4a849">
+                        <circle cx="105" cy="168" r="3"/>
+                        <circle cx="230" cy="120" r="3"/>
+                        <circle cx="355" cy="72" r="3"/>
+                        <circle cx="480" cy="44" r="3"/>
+                    </g>
+                    <!-- benchmark -->
+                    <polyline fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5" stroke-dasharray="4 4"
+                        points="0,178 50,172 100,170 150,164 200,162 250,156 300,155 350,150 400,146 450,144 500,138"/>
+                    <text x="500" y="130" text-anchor="end" fill="rgba(255,255,255,.35)" font-size="10" font-family="JetBrains Mono">HSI · 基準</text>
+                </svg>
+
+                <p style="font-family:var(--mono); font-size:11px; color:var(--text-dim); margin-top:16px; letter-spacing:.1em; line-height:1.6;">
+                    // 方向策略特徵：勝率 ~42%，靠盈虧比（2.1）取勝<br>
+                    // 圖示數據僅供視覺展示 · NOT INVESTMENT ADVICE<br>
+                    // 最終績效以比賽實盤為準 · REAL PERFORMANCE TBD
+                </p>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<!-- ================= WHY US ================= -->
+<section id="why" class="tight">
+    <div class="container">
+        <div class="sec-tag reveal">SECTION 05 · CONVICTION</div>
+        <h2 class="sec-title reveal">為什麼是<span class="accent">我們</span>？</h2>
+        <p class="sec-sub reveal">小團隊有大夢想。我們相信「兩個人 + 一套好規則」永遠勝過「一百個人 + 一份爛 Excel」。</p>
+
+        <div class="pillars">
+            <div class="pillar reveal">
+                <span class="num">01</span>
+                <div class="icon">⌬</div>
+                <h4>工程 × 算法</h4>
+                <p>電子信息工程的隊長把信號處理、嵌入式、低延遲做到極致；計算機出身的隊員把因子模型、機器學習、回測框架搭建起來。兩條腿走路，比單兵作戰走得遠。</p>
+            </div>
+            <div class="pillar reveal">
+                <span class="num">02</span>
+                <div class="icon">⏱</div>
+                <h4>紀律即護欄</h4>
+                <p>方向策略最怕的不是看錯，而是看對方向卻死在回撤上。每一筆持倉都設硬止損，組合設最大回撤上限與單一標的曝險上限，並用波動率動態調整倉位——先活下來，再賺趨勢的錢。</p>
+            </div>
+            <div class="pillar reveal">
+                <span class="num">03</span>
+                <div class="icon">◈</div>
+                <h4>學界與業界接軌</h4>
+                <p>大連理工「海納百川 · 自強不息」的精神，遇上香港量化大賽，是內地理工學子第一次真正意義上站上維港擂臺。把論文變成策略，把代碼變成訂單。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA / CONTACT ================= -->
+<section id="contact" class="cta-section">
+    <div class="container">
+        <div class="cta-card reveal">
+            <div class="sec-tag" style="justify-content:center;">SECTION 06 · CONTACT</div>
+            <h2 class="sec-title">和我們建立<span class="accent">連接</span></h2>
+            <p>我們歡迎業界導師、學長姐、與同樣關心量化的朋友，透過以下方式聯絡我們。<br>
+            比賽期間，我們會持續更新策略筆記與賽事日誌。</p>
+
+            <div class="cta-email">
+                <span>◇</span>
+                meta.profit.king @ gmail.com
+            </div>
+
+            <div class="btns">
+                <a href="#" class="btn btn-primary">
+                    下載團隊簡歷 (PDF)
+                    <span class="arrow">↓</span>
+                </a>
+                <a href="#" class="btn btn-ghost">
+                    GITHUB · 即將上線
+                </a>
+                <a href="#" class="btn btn-ghost">
+                    STRATEGY NOTES
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+    <div class="container">
+        <div class="foot-top">
+            <div>
+                <div class="foot-brand">
+                    <span class="brand-mark">M</span>
+                    MPK · META PROFIT KING
+                </div>
+                <div class="foot-tag">
+                    一個兩人組成的量化交易小隊 · 系統化方向策略<br>
+                    來自大連理工大學 · 征戰 2026 香港量化交易大賽
+                </div>
+            </div>
+            <div class="foot-col">
+                <h5>NAVIGATE</h5>
+                <ul>
+                    <li><a href="#comp">賽事介紹</a></li>
+                    <li><a href="#members">團隊成員</a></li>
+                    <li><a href="#stack">技術棧</a></li>
+                    <li><a href="#strategy">策略路線</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>THE COMP</h5>
+                <ul>
+                    <li><a href="#">Fund Connect HK</a></li>
+                    <li><a href="#">HKU Web3 Institute</a></li>
+                    <li><a href="#">天龍證券 / IBKR</a></li>
+                    <li><a href="#">AiVIX · Glassnode</a></li>
+                </ul>
+            </div>
+            <div class="foot-col">
+                <h5>CONNECT</h5>
+                <ul>
+                    <li><a href="#">meta.profit.king @ gmail.com</a></li>
+                    <li><a href="#">GitHub · Coming Soon</a></li>
+                    <li><a href="#">策略日誌 · 持續更新</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="foot-bottom">
+            <div>© 2026 META PROFIT KING · ALL RIGHTS RESERVED</div>
+            <div>BUILT WITH 〈/〉 BY DUT · FOR HK QUANT 2026</div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ===== Simple scroll reveal =====
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('show');
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ===== Duplicate ticker content for seamless loop =====
+    const t = document.getElementById('ticker-track');
+    if (t) t.innerHTML += t.innerHTML;
+
+    // ===== Smooth anchor scroll w/ offset =====
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const id = a.getAttribute('href');
+            if (id.length > 1) {
+                const el = document.querySelector(id);
+                if (el) {
+                    e.preventDefault();
+                    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
